@@ -125,7 +125,7 @@ function viewFood(slotKey) {
   return `<header class="page"><h1>Food</h1><p class="meta">Any ftour + ghda + 3sha ≈ 1850 kcal and 150 g protein</p></header>
     <div class="seg three" role="tablist" aria-label="Meal">${Object.entries(SLOT).map(([k, s]) =>
       `<a role="tab" class="press" aria-selected="${s === slot}" href="#/food/${k}">${s}</a>`).join("")}</div>
-    <p class="note">${{ Ftour: "07:30", Ghda: "13:30 (14:30 after a 13:00 gym day)", "3sha": "20:30" }[slot]} · each ${slot} ≈ ${t.kcal} kcal, ${t.p} g protein${slot === "Ftour" ? "" : ", with 150 g raw chicken"}.</p>
+    <p class="note">${{ Ftour: "07:30", Ghda: "13:30", "3sha": "20:30" }[slot]} · each ${slot} ≈ ${t.kcal} kcal, ${t.p} g protein${slot === "Ftour" ? "" : ", with 150 g raw chicken"}.</p>
     <ol class="recipes stagger">${DATA.meals[slot].map((r, i) => `<li style="--i:${i}"><a class="rrow press" href="#/r/${r.id}">
       <span class="fan" style="view-transition-name: r-${r.id}">${fan(r)}</span>
       <span class="rt"><b>${esc(r.name)}</b><small><span class="nw"><em>${r.kcal}</em> kcal</span> · <span class="nw"><em>${r.p}</em> g protein</span> · <span class="nw"><em>${r.cost}</em> MAD</span> · <span class="nw">${r.time} min</span></small></span>
@@ -173,20 +173,12 @@ const DAY = {
     ["11:00", "Coffee", "Optional"], ["13:30", "Ghda", "~4–5 h after ftour keeps protein spread over the day [B]"],
     ["15:30", "Last coffee", "8 h or more before sleep [B]"], ["17:00", "Snack", "Optional, ~150 kcal"],
     ["20:30", "3sha", "3 h or more before bed [C]"], ["23:00", "Wind down", "Dim light, phone away [C]"], ["00:00", "Sleep", "7 h. 23:30 is better if you can [B]"]],
-  gym13: [["07:00", "Wake up", "500 ml water"], ["07:30", "Ftour", "Creatine 5 g with it [A]"], ["08:00", "Coffee", "Black"],
-    ["11:30", "Snack", "Lben or banana: fuel 1.5 h before training"], ["12:15", "Coffee", "Optional pre-workout"],
-    ["13:00", "Train", "Gym, ~60 min"], ["14:30", "Ghda", "Right after training"], ["20:30", "3sha", "3 h or more before bed [C]"],
-    ["23:00", "Wind down", "Dim light, phone away [C]"], ["00:00", "Sleep", "7 h. 23:30 is better if you can [B]"]],
 };
-let dayKind = "normal";
 function viewTiming() {
   const now = new Date(), mins = now.getHours() * 60 + now.getMinutes();
-  const list = DAY[dayKind], toM = (t) => +t.slice(0, 2) * 60 + +t.slice(3);
+  const list = DAY.normal, toM = (t) => +t.slice(0, 2) * 60 + +t.slice(3);
   const next = list.findIndex(([t]) => toM(t) >= mins && toM(t) !== 0);
   return `<section class="block"><h2>Daily timing</h2>
-    <div class="seg two" role="tablist" aria-label="Day type">
-      <button role="tab" class="press" data-day="normal" aria-selected="${dayKind === "normal"}">Normal day</button>
-      <button role="tab" class="press" data-day="gym13" aria-selected="${dayKind === "gym13"}">13:00 gym day</button></div>
     <ol class="timeline">${list.map(([t, a, b], i) => `<li class="${i === next ? "now" : ""}"><time>${t}</time><span><b>${a}</b><small>${b}</small></span></li>`).join("")}</ol></section>`;
 }
 const evk = (html) => html.replace(/\[([ABCV])\]/g, '<span class="evk" title="Evidence level">$1</span>');
@@ -307,8 +299,6 @@ addEventListener("hashchange", route);
 main.addEventListener("click", (ev) => {
   const ph = ev.target.closest("[data-phase]");
   if (ph) { store.set("phase", ph.dataset.phase); return route(); }
-  const dk = ev.target.closest("[data-day]");
-  if (dk) { dayKind = dk.dataset.day; return route(); }
   const fin = ev.target.closest("[data-finish]");
   if (fin) { store.set("last", fin.dataset.finish); location.hash = "#/train"; return; }
   const h = location.hash.split("/"), n = +h[2], i = +h[3];
