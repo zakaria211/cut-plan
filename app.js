@@ -114,7 +114,7 @@ const fan = (r, k = 3) => r.ing.filter((i) => !/oil/.test(i.name)).sort((a, b) =
 
 function viewFood(slotKey) {
   const slot = SLOT[slotKey] || "Ftour", t = DATA.slots[slot];
-  return `<header class="page"><h1>Food</h1><p class="meta">Any ftour + ghda + 3sha ≈ 1850 kcal, 150 g protein or more, about 40 MAD a day (≈ 1200 MAD a month) with the free chicken.</p></header>
+  return `<header class="page"><h1>Food</h1><p class="meta">Any ftour + ghda + 3sha ≈ 1850 kcal, 150 g protein or more, about 33 MAD a day (≈ 1000 MAD a month) with the free chicken. Everything is sold at any hanout, souk or BIM.</p></header>
     <div class="seg three" role="tablist" aria-label="Meal">${Object.entries(SLOT).map(([k, s]) =>
       `<a role="tab" class="press" aria-selected="${s === slot}" href="#/food/${k}">${s}</a>`).join("")}</div>
     <p class="note">${{ Ftour: "07:30", Ghda: "13:30", "3sha": "20:30" }[slot]} · each ${slot} ≈ ${t.kcal} kcal, ${t.p} g protein${slot === "Ftour" ? "" : ", with 150 g raw chicken"}.</p>
@@ -145,7 +145,7 @@ function viewRecipe(id) {
       </div></section>
     <h2 class="sec">Ingredients</h2>
     <ul class="ings stagger">${r.ing.map((i, k) => `<li style="--i:${k}"><img src="img/${i.img}.webp" alt="" width="120" height="120" loading="lazy">
-      <b>${i.g} g</b><span>${esc(ingLabel(i))}</span></li>`).join("")}</ul>
+      <b>${i.g} g</b><span>${esc(ingLabel(i))}</span>${i.or ? `<em class="swap">${esc(i.or)}</em>` : ""}</li>`).join("")}</ul>
     <p class="tip">${chicken ? "Weigh the chicken raw. " : "1 egg white ≈ 33 g. "}Oil by spoon: 5 g = 1 tsp, 10 g = 1 tbsp. Spices, garlic, herbs and lemon are free.</p>
     <h2 class="sec">How to cook</h2>
     <ol class="steps">${r.steps.map((s, k) => `<li class="reveal"><span class="sn">${k + 1}</span><p>${esc(s)}</p></li>`).join("")}</ol>`;

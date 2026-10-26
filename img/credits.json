@@ -221,23 +221,11 @@
   "license": "CC BY-SA 4.0",
   "url": "https://commons.wikimedia.org/wiki/File:Batbout.jpg"
  },
- "greek-yogurt": {
-  "file": "File:Joghurt.jpg",
-  "author": "No machine-readable author provided. Rainer Zenz assumed (based on copyright cla",
-  "license": "CC BY-SA 3.0",
-  "url": "https://commons.wikimedia.org/wiki/File:Joghurt.jpg"
- },
  "avocado": {
   "file": "File:Avocado Hass - single and halved.jpg",
   "author": "Ivar Leidus",
   "license": "CC BY-SA 4.0",
   "url": "https://commons.wikimedia.org/wiki/File:Avocado_Hass_-_single_and_halved.jpg"
- },
- "quinoa-dry": {
-  "file": "File:Liat Portal for Foodie Disorder - Quinoa, Schnitzel and Israeli Salad.jpg",
-  "author": "HaJunkiyada",
-  "license": "CC BY-SA 4.0",
-  "url": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Quinoa,_Schnitzel_and_Israeli_Salad.jpg"
  },
  "mushrooms": {
   "file": "File:ChampignonMushroom.jpg",
@@ -245,52 +233,40 @@
   "license": "CC BY-SA 3.0",
   "url": "https://commons.wikimedia.org/wiki/File:ChampignonMushroom.jpg"
  },
- "spinach": {
-  "file": "File:Liat Portal for Foodie Disorder - Fresh spinach leaves.jpg",
-  "author": "HaJunkiyada",
-  "license": "CC BY-SA 4.0",
-  "url": "https://commons.wikimedia.org/wiki/File:Liat_Portal_for_Foodie_Disorder_-_Fresh_spinach_leaves.jpg"
- },
- "broccoli": {
-  "file": "File:Broccoli_and_cross_section_edit.jpg",
-  "author": "Fir0002",
-  "license": "GFDL 1.2",
-  "url": "https://commons.wikimedia.org/wiki/File:Broccoli_and_cross_section_edit.jpg"
- },
- "kidney-beans-canned": {
-  "file": "File:Red_Rajma_BNC.jpg",
-  "author": "Prathyush Thomas",
-  "license": "GFDL 1.2",
-  "url": "https://commons.wikimedia.org/wiki/File:Red_Rajma_BNC.jpg"
- },
- "feta": {
-  "file": "File:Feta_Cheese.jpg",
-  "author": "JJ Harrison (https://www.jjharrison.com.au/)",
-  "license": "CC BY-SA 2.5",
-  "url": "https://commons.wikimedia.org/wiki/File:Feta_Cheese.jpg"
- },
- "cheddar": {
-  "file": "File:Somerset-Cheddar.jpg",
-  "author": "J.P.Lon",
-  "license": "CC BY-SA 3.0",
-  "url": "https://commons.wikimedia.org/wiki/File:Somerset-Cheddar.jpg"
- },
- "frozen-berries": {
-  "file": "File:Bowl full of mixed berries (40640199055).jpg",
-  "author": "Rawpixel Ltd",
-  "license": "CC BY 2.0",
-  "url": "https://commons.wikimedia.org/wiki/File:Bowl_full_of_mixed_berries_(40640199055).jpg"
- },
  "soy-sauce": {
   "file": "File:Soy_sauce_2.jpg",
   "author": "국립국어원",
   "license": "CC BY-SA 2.0 kr",
   "url": "https://commons.wikimedia.org/wiki/File:Soy_sauce_2.jpg"
  },
- "whole-wheat-pasta-dry": {
+ "plain-yogurt": {
+  "file": "File:Joghurt.jpg",
+  "author": "No machine-readable author provided. Rainer Zenz assumed (based on copyright cla",
+  "license": "CC BY-SA 3.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Joghurt.jpg"
+ },
+ "jben-fresh-cheese": {
+  "file": "File:Fromage-blanc1 cropped.jpg",
+  "author": "Pancrat",
+  "license": "CC BY-SA 3.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Fromage-blanc1_cropped.jpg"
+ },
+ "pasta-dry": {
   "file": "File:Pennelisce_closeup.png",
   "author": "Popo le Chien",
   "license": "CC0",
   "url": "https://commons.wikimedia.org/wiki/File:Pennelisce_closeup.png"
+ },
+ "white-beans-cooked": {
+  "file": "File:Phaseolus_vulgaris_white_beans,_witte_boon.jpg",
+  "author": "Rasbak",
+  "license": "CC BY-SA 3.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Phaseolus_vulgaris_white_beans,_witte_boon.jpg"
+ },
+ "fromage-rouge-edam": {
+  "file": "File:Edam cheese with knife.jpg",
+  "author": "Peachyeung316",
+  "license": "CC BY-SA 4.0",
+  "url": "https://commons.wikimedia.org/wiki/File:Edam_cheese_with_knife.jpg"
  }
 }
