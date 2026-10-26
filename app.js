@@ -21,11 +21,8 @@ const icon = (n, cls = "") => `<svg class="ic ${cls}" viewBox="0 0 24 24" aria-h
 /* ---------- data ---------- */
 const DATA = window.FOOD, PL = window.PLAN, DEMO = window.DEMO;
 const phase = () => store.get("phase", "A");
-const lastDone = () => +store.get("last", "0");
-const nextDay = () => (lastDone() % 5) + 1;
 const dayEx = (d) => d.ex.all || d.ex[phase()];
 const dayTitle = (d) => (d.title && d.title[phase()]) || d.name;
-const dayShort = (d) => (d.title && d.title[phase()]) ? dayTitle(d).split(" ")[0] : d.short || d.name;
 const mmss = (s) => `${Math.floor(s / 60)}:${String(Math.max(0, Math.ceil(s) % 60)).padStart(2, "0")}`;
 const minutes = (list) => Math.round(list.reduce((t, x) => t + x.sets * (45 + x.rest), 0) / 60 / 5) * 5;
 const SLOT = { ftour: "Ftour", ghda: "Ghda", "3sha": "3sha" };
@@ -46,19 +43,14 @@ const dots = (n, i, x) => Array.from({ length: x.sets }, (_, k) => `<i class="${
 
 /* ---------- views ---------- */
 function viewTrain() {
-  const n = nextDay(), d = PL.days[n - 1], list = dayEx(d), L = lastDone(), ph = phase();
-  return `<section class="hero">
-      <div class="hero-media demo" style="view-transition-name: ex-${n}-0">${demo(list[0].id)}</div>
-      <div class="hero-copy">
-        <h1 class="hero-title">${esc(dayTitle(d))}</h1>
-        <p class="meta">Day ${n} of 5 · ${d.where} · ${list.length} exercises · ~${minutes(list)} min</p>
-        <a class="btn primary press" href="#/day/${n}">${icon("play")} Start day ${n}</a>
-      </div>
-    </section>
-    <ol class="route" aria-label="Training days, in order">${PL.days.map((k) => {
-      const state = k.n === n ? "next" : L < 5 && k.n <= L ? "done" : "";
-      return `<li class="${state}"><a class="press" href="#/day/${k.n}" ${state === "next" ? 'aria-current="step"' : ""}>
-        <span class="node">${state === "done" ? icon("check") : k.n}</span><span class="lbl">${esc(dayShort(k))}</span></a></li>`;
+  const ph = phase();
+  return `<header class="page"><h1>Train</h1><p class="meta">Pick today's session. Each day once a week, in any order.</p></header>
+    <ol class="days stagger">${PL.days.map((d, i) => {
+      const list = dayEx(d);
+      return `<li style="--i:${i}"><a class="dayrow press" href="#/day/${d.n}">
+        <span class="dthumb" style="view-transition-name: ex-${d.n}-0">${still(list[0].id)}</span>
+        <span class="rt"><b>${esc(dayTitle(d))}</b><small>${d.where} · ${list.length} exercises · ~${minutes(list)} min</small></span>
+        ${icon("next", "chev")}</a></li>`;
     }).join("")}</ol>
     <section class="phase">
       <h2>Knee phase</h2>
@@ -66,7 +58,7 @@ function viewTrain() {
         `<button role="tab" aria-selected="${k === ph}" data-phase="${k}" class="press">${esc(p.name)}</button>`).join("")}</div>
       <p class="note">${esc(PL.phases[ph].when)}. ${esc(PL.phases[ph].note)}</p>
     </section>
-    <p class="foot">Do the days in order on any free days. Max 2 training days in a row, 2 rest days per 7.</p>`;
+    <p class="foot">Max 2 training days in a row, at least 2 rest days a week.</p>`;
 }
 
 function viewDay(n) {
@@ -80,7 +72,6 @@ function viewDay(n) {
       <span class="thumb" style="view-transition-name: ex-${n}-${i}">${still(x.id)}</span>
       <span class="rt"><b>${esc(EX[x.id].name)}</b><small>${x.sets} × ${esc(x.reps)} · ${x.rest ? "rest " + mmss(x.rest) : "superset"}</small>
         <span class="dots">${dots(n, i, x)}</span></span>${icon("next", "chev")}</a></li>`).join("")}</ol>
-    <button class="btn ghost finish press" data-finish="${n}">${icon("flag")} Finish day ${n}</button>
     <p class="foot">Stop 0–3 reps before failure (RIR). When every set hits the top of the range, add the smallest weight next time [B].</p>`;
 }
 
@@ -99,7 +90,8 @@ function viewEx(n, i) {
       <button role="tab" class="press" data-alt="0" aria-selected="${!alt}">Main</button>
       <button role="tab" class="press" data-alt="1" aria-selected="${alt}">Backup</button></div>
     <h1 class="exname">${esc(alt ? e.alt : e.name)}</h1>
-    ${alt ? `<p class="note">Use it when the machine is taken or it hurts. Same sets and reps.</p>` : ""}
+    ${(alt ? e.altNote : e.demoNote) ? `<p class="note">${esc(alt ? e.altNote : e.demoNote)}</p>` : ""}
+    ${alt ? `<p class="note">Use it when the main one isn't possible or it hurts. Same sets and reps.</p>` : ""}
     <dl class="dose">
       <div><dt>Sets</dt><dd data-count="${x.sets}">${x.sets}</dd></div>
       <div><dt>Reps</dt><dd>${reps ? `<span data-count="${reps[1]}">${reps[1]}</span>${esc(reps[2])}` : esc(x.reps)}</dd></div>
@@ -276,20 +268,23 @@ document.addEventListener("visibilitychange", () => { if (!document.hidden && T.
 
 /* ---------- router ---------- */
 const main = $("#main");
-let shown = "";
+let shown = "", shownTab = "";
 function route() {
   const h = location.hash.replace(/^#\/?/, "").split("/");
   const tab = { day: "train", ex: "train", r: "food" }[h[0]] || h[0] || "train";
   const html = h[0] === "day" ? viewDay(+h[1]) : h[0] === "ex" ? viewEx(+h[1], +h[2]) : h[0] === "food" ? viewFood(h[1])
     : h[0] === "r" ? viewRecipe(h[1]) : h[0] === "plan" ? viewPlan() : viewTrain();
-  const key = location.hash;
+  const key = location.hash, sameTab = tab === shownTab;
   const swap = () => {
+    shownTab = tab;
+    if (!sameTab) { main.classList.remove("tabin"); void main.offsetWidth; main.classList.add("tabin"); }
+    $(".tabs").style.setProperty("--t", ["train", "food", "plan"].indexOf(tab));
     shown = key;
     main.innerHTML = html; window.scrollTo(0, 0);
     document.querySelectorAll(".tabs a").forEach((a) => a.setAttribute("aria-current", a.dataset.tab === tab ? "page" : "false"));
     countUp(main); reveal(main);
   };
-  if (!shown || !document.startViewTransition || REDUCED) return swap();
+  if (!shown || !sameTab || !document.startViewTransition || REDUCED) return swap();
   const vt = document.startViewTransition(swap);
   vt.ready.catch(() => {});
   vt.finished.catch(() => {}).finally(() => shown !== key && swap()); // transition aborted: still render
@@ -299,8 +294,6 @@ addEventListener("hashchange", route);
 main.addEventListener("click", (ev) => {
   const ph = ev.target.closest("[data-phase]");
   if (ph) { store.set("phase", ph.dataset.phase); return route(); }
-  const fin = ev.target.closest("[data-finish]");
-  if (fin) { store.set("last", fin.dataset.finish); location.hash = "#/train"; return; }
   const h = location.hash.split("/"), n = +h[2], i = +h[3];
   if (h[1] !== "ex") return;
   const alt = ev.target.closest("[data-alt]");
