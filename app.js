@@ -114,7 +114,7 @@ const fan = (r, k = 3) => r.ing.filter((i) => !/oil/.test(i.name)).sort((a, b) =
 
 function viewFood(slotKey) {
   const slot = SLOT[slotKey] || "Ftour", t = DATA.slots[slot];
-  return `<header class="page"><h1>Food</h1><p class="meta">Any ftour + ghda + 3sha ≈ 1850 kcal and 150 g protein</p></header>
+  return `<header class="page"><h1>Food</h1><p class="meta">Any ftour + ghda + 3sha ≈ 1850 kcal, 150 g protein or more, about 40 MAD a day (≈ 1200 MAD a month) with the free chicken.</p></header>
     <div class="seg three" role="tablist" aria-label="Meal">${Object.entries(SLOT).map(([k, s]) =>
       `<a role="tab" class="press" aria-selected="${s === slot}" href="#/food/${k}">${s}</a>`).join("")}</div>
     <p class="note">${{ Ftour: "07:30", Ghda: "13:30", "3sha": "20:30" }[slot]} · each ${slot} ≈ ${t.kcal} kcal, ${t.p} g protein${slot === "Ftour" ? "" : ", with 150 g raw chicken"}.</p>
