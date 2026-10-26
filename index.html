@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cut Plan</title>
+<meta name="description" content="Personal 5-day training and Moroccan fat-loss recipes, offline.">
+<meta name="theme-color" content="#001d39">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Cut Plan">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preload" href="fonts/gabarito.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="main" tabindex="-1"></main>
+
+<div id="rest" role="dialog" aria-label="Rest timer" hidden>
+  <img class="rest-bg" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt="">
+  <div class="layer base">
+    <p class="rl"></p><b class="big">0:00</b><p class="up"></p>
+    <div class="rbtns"><button class="add press"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6v12M6 12h12"/></svg>15 s</button><button class="skip press"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6l8 6-8 6zM17 6v12"/></svg>Skip</button></div>
+  </div>
+  <div class="layer coat" aria-hidden="true">
+    <p class="rl"></p><b class="big">0:00</b><p class="up"></p>
+    <div class="rbtns"><button class="add press" tabindex="-1"><svg class="ic" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12"/></svg>15 s</button><button class="skip press" tabindex="-1"><svg class="ic" viewBox="0 0 24 24"><path d="M7 6l8 6-8 6zM17 6v12"/></svg>Skip</button></div>
+  </div>
+</div>
+
+<!-- tab icons: Lucide (ISC license) -->
+<nav class="tabs" aria-label="Sections">
+  <a href="#/train" data-tab="train" class="press"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg><span>Train</span></a>
+  <a href="#/food/ftour" data-tab="food" class="press"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z"/><path d="M6 17h12"/></svg><span>Food</span></a>
+  <a href="#/plan" data-tab="plan" class="press"><svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span>Plan</span></a>
+</nav>
+<script src="data.js"></script>
+<script src="train.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
