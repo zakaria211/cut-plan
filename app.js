@@ -125,7 +125,7 @@ function viewFood(slotKey) {
   return `<header class="page"><h1>Food</h1><p class="meta">Any ftour + ghda + 3sha ≈ 1850 kcal and 150 g protein</p></header>
     <div class="seg three" role="tablist" aria-label="Meal">${Object.entries(SLOT).map(([k, s]) =>
       `<a role="tab" class="press" aria-selected="${s === slot}" href="#/food/${k}">${s}</a>`).join("")}</div>
-    <p class="note">Each ${slot} ≈ ${t.kcal} kcal, ${t.p} g protein${slot === "Ftour" ? "" : ", with 150 g raw chicken"}.</p>
+    <p class="note">${{ Ftour: "07:30", Ghda: "13:30 (14:30 after a 13:00 gym day)", "3sha": "20:30" }[slot]} · each ${slot} ≈ ${t.kcal} kcal, ${t.p} g protein${slot === "Ftour" ? "" : ", with 150 g raw chicken"}.</p>
     <ol class="recipes stagger">${DATA.meals[slot].map((r, i) => `<li style="--i:${i}"><a class="rrow press" href="#/r/${r.id}">
       <span class="fan" style="view-transition-name: r-${r.id}">${fan(r)}</span>
       <span class="rt"><b>${esc(r.name)}</b><small><span class="nw"><em>${r.kcal}</em> kcal</span> · <span class="nw"><em>${r.p}</em> g protein</span> · <span class="nw"><em>${r.cost}</em> MAD</span> · <span class="nw">${r.time} min</span></small></span>
@@ -167,6 +167,28 @@ const BUY = [
   ["Creatine monohydrate 300 g", "≈ 197 MAD", "https://www.marjanemall.ma/p/AAANU67417", "Marjane Mall"],
 ];
 
+// daily timing, built around sleep 00:00-07:00
+const DAY = {
+  normal: [["07:00", "Wake up", "500 ml water"], ["07:30", "Ftour", "Creatine 5 g with it [A]"], ["08:00", "Coffee", "Black. Morning training: train 1–2 h after ftour"],
+    ["11:00", "Coffee", "Optional"], ["13:30", "Ghda", "~4–5 h after ftour keeps protein spread over the day [B]"],
+    ["15:30", "Last coffee", "8 h or more before sleep [B]"], ["17:00", "Snack", "Optional, ~150 kcal"],
+    ["20:30", "3sha", "3 h or more before bed [C]"], ["23:00", "Wind down", "Dim light, phone away [C]"], ["00:00", "Sleep", "7 h. 23:30 is better if you can [B]"]],
+  gym13: [["07:00", "Wake up", "500 ml water"], ["07:30", "Ftour", "Creatine 5 g with it [A]"], ["08:00", "Coffee", "Black"],
+    ["11:30", "Snack", "Lben or banana: fuel 1.5 h before training"], ["12:15", "Coffee", "Optional pre-workout"],
+    ["13:00", "Train", "Gym, ~60 min"], ["14:30", "Ghda", "Right after training"], ["20:30", "3sha", "3 h or more before bed [C]"],
+    ["23:00", "Wind down", "Dim light, phone away [C]"], ["00:00", "Sleep", "7 h. 23:30 is better if you can [B]"]],
+};
+let dayKind = "normal";
+function viewTiming() {
+  const now = new Date(), mins = now.getHours() * 60 + now.getMinutes();
+  const list = DAY[dayKind], toM = (t) => +t.slice(0, 2) * 60 + +t.slice(3);
+  const next = list.findIndex(([t]) => toM(t) >= mins && toM(t) !== 0);
+  return `<section class="block"><h2>Daily timing</h2>
+    <div class="seg two" role="tablist" aria-label="Day type">
+      <button role="tab" class="press" data-day="normal" aria-selected="${dayKind === "normal"}">Normal day</button>
+      <button role="tab" class="press" data-day="gym13" aria-selected="${dayKind === "gym13"}">13:00 gym day</button></div>
+    <ol class="timeline">${list.map(([t, a, b], i) => `<li class="${i === next ? "now" : ""}"><time>${t}</time><span><b>${a}</b><small>${b}</small></span></li>`).join("")}</ol></section>`;
+}
 const evk = (html) => html.replace(/\[([ABCV])\]/g, '<span class="evk" title="Evidence level">$1</span>');
 function viewPlan() {
   const S = DATA.slots, rows = (arr) => arr.map(([a, b]) => `<li><span>${a}</span><b>${b}</b></li>`).join("");
@@ -176,6 +198,7 @@ function viewPlan() {
       <div class="split"><span class="bar"><i class="p" style="--w:30%"></i><i class="f" style="--w:27%"></i><i class="c" style="--w:43%"></i></span>
         <span class="legend"><span><i class="p"></i>Protein <b>150 g</b></span><span><i class="f"></i>Fat <b>60 g</b></span><span><i class="c"></i>Carbs <b>215 g</b></span></span></div>
       <p class="small">Burn ≈ 2500 (BMR 1757). Deficit ≈ 500, so about 0.5 kg a week [B]. Fiber 30 g or more.</p></section>
+    ${viewTiming()}
     <section class="block"><h2>Meals</h2><ul class="kv">${rows([["Ftour", `${S.Ftour.kcal} kcal · ${S.Ftour.p} g P`], ["Ghda", `${S.Ghda.kcal} kcal · ${S.Ghda.p} g P`], ["3sha", `${S["3sha"].kcal} kcal · ${S["3sha"].p} g P`], ["Snack, optional", "≈ 150 kcal"]])}</ul></section>
     <section class="block"><h2>Body</h2><ul class="kv">${rows([["Now", "78 kg · 18–21 % [V]"], ["2 months ago", "75 kg · ~13 % [V]"], ["Goal", "~75 kg in 6–8 weeks"]])}</ul>
       <p class="small">Muscle stayed; the +3 kg is mostly fat and water. Focus: waist fat (diet and steps), side delts, lats, upper chest, rear delts. Training the belly does not burn belly fat [A].</p></section>
@@ -184,7 +207,7 @@ function viewPlan() {
       <li>Weigh every morning, judge by the weekly average [B].</li><li>Under 0.3 kg a week for 2 weeks: cut 40 g bread or rice, or walk 2000 more steps.</li>
       <li>One flexible meal a week: up to 1000 kcal, at least 40 g protein [C].</li></ul></section>
     <section class="block"><h2>Every day</h2><ul class="list">
-      <li>Sleep 7–9 h [B].</li><li>Steps: 6k now, then +1k each week up to 8–10k [B].</li><li>Creatine 3–5 g, any time [A].</li>
+      <li>Sleep 00:00–07:00, aim for 7–9 h [B].</li><li>Steps: 6k now, then +1k each week up to 8–10k [B].</li><li>Creatine 3–5 g, any time [A].</li>
       <li>Coffee: 2–3 cups black, the last one 8 h before bed [B].</li><li>Water 2.5–3 L [C].</li></ul></section>
     <section class="block"><h2>Buy</h2><ul class="buy">${BUY.map(([n, p, u, s]) =>
       `<li><a class="press" href="${u}" target="_blank" rel="noopener"><span><b>${n}</b><small>${s}</small></span><em>${p}</em>${icon("link")}</a></li>`).join("")}</ul>
@@ -284,6 +307,8 @@ addEventListener("hashchange", route);
 main.addEventListener("click", (ev) => {
   const ph = ev.target.closest("[data-phase]");
   if (ph) { store.set("phase", ph.dataset.phase); return route(); }
+  const dk = ev.target.closest("[data-day]");
+  if (dk) { dayKind = dk.dataset.day; return route(); }
   const fin = ev.target.closest("[data-finish]");
   if (fin) { store.set("last", fin.dataset.finish); location.hash = "#/train"; return; }
   const h = location.hash.split("/"), n = +h[2], i = +h[3];

@@ -259,3 +259,13 @@ body::after { content: ""; position: fixed; inset: auto 0 0; height: calc(110px 
 
 .tabs .ic { width: 24px; height: 24px; stroke-width: 1.8; transition: transform .5s var(--ease); }
 .tabs a[aria-current="page"] .ic { transform: translateY(-1px) scale(1.06); }
+
+.timeline { list-style: none; margin: 16px 0 0; padding: 0; position: relative; }
+.timeline::before { content: ""; position: absolute; left: 61px; top: 14px; bottom: 14px; width: 2px; background: var(--line); }
+.timeline li { display: grid; grid-template-columns: 52px 1fr; gap: 22px; padding: 9px 0; position: relative; }
+.timeline li::before { content: ""; position: absolute; left: 57px; top: 17px; width: 10px; height: 10px; border-radius: 50%; background: var(--raise); box-shadow: inset 0 0 0 2px var(--brand); }
+.timeline time { font: 650 16px var(--display); color: var(--t2); padding-top: 1px; }
+.timeline b { display: block; font: 600 16px var(--body); }
+.timeline small { color: var(--t2); font-size: 14px; }
+.timeline .now::before { background: var(--sky); box-shadow: none; }
+.timeline .now time, .timeline .now b { color: var(--sky); }
