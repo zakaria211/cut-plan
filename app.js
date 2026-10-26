@@ -318,4 +318,12 @@ main.addEventListener("touchend", (e) => {
 });
 
 route();
-if ("serviceWorker" in navigator && location.hostname !== "localhost") navigator.serviceWorker.register("sw.js").catch(() => {});
+// offline + auto-update: check for a new version on every open, reload once it is installed
+if ("serviceWorker" in navigator && location.hostname !== "localhost") {
+  const had = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).then((reg) => {
+    reg.update();
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) reg.update(); });
+  }).catch(() => {});
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if (had && !T.key) location.reload(); });
+}
